@@ -1,0 +1,28 @@
+spring:
+  application: storeapi
+  datasource:
+    url: jdbc:postgresql://localhost:5432/storeapi_db
+    username: postgres
+    password: postgres
+  flyway:
+    baseline-on-migrate: true
+#  jpa:
+#    defer-datasource-initialization: true
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+#        show-sql: true
+#        format_sql: true
+#        jdbc:
+#          lob:
+#            non_contextual_creation: true
+#  sql:
+#    init:
+#      mode: always
+
+storeapi:
+  jwt:
+    secret: secret
+    expiration: 600000
