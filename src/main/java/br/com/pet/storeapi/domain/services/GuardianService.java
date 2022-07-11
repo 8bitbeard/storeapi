@@ -41,7 +41,6 @@ public class GuardianService {
         if (userAlreadyExists) {
             throw new EmailAlreadyInUseException();
         }
-        System.out.println("Testando printoutln");
 
         boolean documentInUse = guardianRepository.findByDocument(newGuardian.getDocument())
                 .stream()
