@@ -6,6 +6,10 @@ import br.com.pet.storeapi.api.mappers.ProcedureMapper;
 import br.com.pet.storeapi.domain.entities.Procedure;
 import br.com.pet.storeapi.domain.services.ProcedureService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +30,12 @@ public class ProcedureController {
         Procedure newProcedure = procedureService.createProcedure(procedure);
 
         return procedureMapper.toDto(newProcedure);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ProcedureResponseDTO> listProcedures(
+            @PageableDefault(sort = "description", direction = Sort.Direction.ASC) Pageable pageable) {
+        return procedureService.listProceduresByPage(pageable).map(procedureMapper::toDto);
     }
 }

@@ -6,6 +6,9 @@ spring:
     password: postgres
   flyway:
     baseline-on-migrate: true
+  devtools:
+    remote:
+      secret: 1234
 #  jpa:
 #    defer-datasource-initialization: true
 #    hibernate:

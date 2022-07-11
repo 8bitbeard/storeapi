@@ -10,6 +10,8 @@ import br.com.pet.storeapi.infra.database.repositories.GuardianRepository;
 import br.com.pet.storeapi.infra.database.repositories.RoleRepository;
 import br.com.pet.storeapi.infra.database.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,7 @@ public class GuardianService {
         if (userAlreadyExists) {
             throw new EmailAlreadyInUseException();
         }
+        System.out.println("Testando printoutln");
 
         boolean documentInUse = guardianRepository.findByDocument(newGuardian.getDocument())
                 .stream()
@@ -80,7 +83,7 @@ public class GuardianService {
         return guardianRepository.save(newGuardian);
     }
 
-    public List<Guardian> listGuardians() {
-        return guardianRepository.findAll();
+    public Page<Guardian> listGuardiansByPage(Pageable pageable) {
+        return guardianRepository.findAll(pageable);
     }
 }

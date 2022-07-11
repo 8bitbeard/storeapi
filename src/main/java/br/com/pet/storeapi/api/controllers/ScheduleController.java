@@ -26,7 +26,7 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.CREATED)
     public ScheduleResponseDTO createSchedule(@RequestBody @Valid ScheduleRequestDTO scheduleRequestDTO) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-//        Schedule newSchedule = scheduleMapper.toEntity(scheduleRequestDTO);
+
         OffsetDateTime scheduleTime = scheduleRequestDTO.getScheduleTime();
         UUID petId = scheduleRequestDTO.getPetId();
         UUID procedureId = scheduleRequestDTO.getProcedureId();

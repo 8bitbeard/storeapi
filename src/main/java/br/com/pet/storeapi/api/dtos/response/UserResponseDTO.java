@@ -10,8 +10,7 @@ import java.util.UUID;
 public class UserResponseDTO {
 
     private UUID id;
-    private String name;
     private String email;
-    private List<Role> authorities;
+    private List<RoleResponseDTO> roles;
 
 }

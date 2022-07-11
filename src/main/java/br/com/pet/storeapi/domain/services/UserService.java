@@ -34,6 +34,10 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    public User findUserByEmail(String userEmail) {
+        return userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
@@ -46,4 +50,6 @@ public class UserService implements UserDetailsService {
 
         return user;
     }
+
+
 }

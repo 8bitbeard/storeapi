@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .antMatchers("/v1/auth/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/v1/guardians").permitAll()
                 .antMatchers(HttpMethod.GET, "/v1/guardians").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET, "/v1/pets").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/v1/procedures").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()

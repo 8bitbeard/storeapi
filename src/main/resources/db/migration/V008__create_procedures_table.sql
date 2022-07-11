@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS procedures (
     id           uuid NOT NULL UNIQUE,
     description  varchar(255) NOT NULL UNIQUE,
-    name         numeric NOT NULL,
+    value        numeric NOT NULL,
 
     PRIMARY KEY (id)
 );

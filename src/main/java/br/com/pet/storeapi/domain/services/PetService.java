@@ -8,6 +8,8 @@ import br.com.pet.storeapi.infra.database.repositories.GuardianRepository;
 import br.com.pet.storeapi.infra.database.repositories.PetRepository;
 import br.com.pet.storeapi.infra.database.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,5 +35,9 @@ public class PetService {
         guardianRepository.save(guardian);
 
         return pet;
+    }
+
+    public Page<Pet> listPetsByPage(Pageable pageable) {
+        return petRepository.findAll(pageable);
     }
 }
