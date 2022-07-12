@@ -1,5 +1,6 @@
 package br.com.pet.storeapi.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -26,6 +28,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @JsonIgnoreProperties
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
@@ -35,6 +38,13 @@ public class User implements UserDetails {
 
     public void addRole(Role role) {
         this.getRoles().add(role);
+    }
+
+    public boolean isAdmin() {
+        return this.roles
+                .stream().map(role -> role.getName())
+                .collect(Collectors.toList())
+                .contains(RoleEnum.ROLE_ADMIN);
     }
 
     @Override

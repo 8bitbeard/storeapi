@@ -11,17 +11,17 @@ CREATE TABLE IF NOT EXISTS pets (
                               ON DELETE CASCADE
 );
 
-INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Vira lata', 'Pé de Pano', 'Cavalo',
+INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Pé de Pano', 'Vira lata', 'Cavalo',
         (select guardians.id from guardians where guardians.name LIKE 'Jhonny Cash'));
-INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Vira lata', 'Rex', 'Cachorro',
+INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Rex', 'Vira lata', 'Cachorro',
         (select guardians.id from guardians where guardians.name LIKE 'Sid Vicious'));
-INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Vira lata', 'Ajudante do Papai Noel', 'Cachorro',
+INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Ajudante do Papai Noel', 'Vira lata', 'Cachorro',
         (select guardians.id from guardians where guardians.name LIKE 'Axl Rose'));
-INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Vira lata', 'Rex', 'Papagaio',
+INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Rex', 'Vira lata', 'Papagaio',
         (select guardians.id from guardians where guardians.name LIKE 'Joey Ramone'));
-INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Vira lata', 'Flora', 'Lhama',
+INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Flora', 'Vira lata', 'Lhama',
         (select guardians.id from guardians where guardians.name LIKE 'Bruce Dickinson'));
-INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Vira lata', 'Dino', 'Iguana',
+INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Dino', 'Vira lata', 'Iguana',
         (select guardians.id from guardians where guardians.name LIKE 'Kurt Cobain'));
-INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Vira lata', 'Lassie', 'Ornitorrinco',
+INSERT INTO pets VALUES(uuid_generate_v4(), '2019-07-04 21:59:32.359', 'Lassie', 'Vira lata', 'Ornitorrinco',
         (select guardians.id from guardians where guardians.name LIKE 'Elvis Presley'));

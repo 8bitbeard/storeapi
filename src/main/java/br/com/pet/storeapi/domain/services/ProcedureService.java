@@ -6,6 +6,7 @@ import br.com.pet.storeapi.infra.database.repositories.ProcedureRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,7 +28,7 @@ public class ProcedureService {
         return procedureRepository.save(procedure);
     }
 
-    public Page<Procedure> listProceduresByPage(Pageable pageable) {
-        return procedureRepository.findAll(pageable);
+    public Page<Procedure> listProceduresByPage(Specification<Procedure> procedureSpec, Pageable pageable) {
+        return procedureRepository.findAll(procedureSpec, pageable);
     }
 }

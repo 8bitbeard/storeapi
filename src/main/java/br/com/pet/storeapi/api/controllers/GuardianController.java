@@ -2,22 +2,35 @@ package br.com.pet.storeapi.api.controllers;
 
 import br.com.pet.storeapi.api.dtos.request.GuardianRequestDTO;
 import br.com.pet.storeapi.api.dtos.response.GuardianResponseDTO;
-import br.com.pet.storeapi.api.mappers.AddressMapper;
-import br.com.pet.storeapi.api.mappers.GuardianMapper;
-import br.com.pet.storeapi.api.mappers.UserMapper;
+import br.com.pet.storeapi.api.dtos.response.PetResponseDTO;
+import br.com.pet.storeapi.api.dtos.response.ScheduleResponseDTO;
+import br.com.pet.storeapi.api.mappers.*;
 import br.com.pet.storeapi.domain.entities.Address;
 import br.com.pet.storeapi.domain.entities.Guardian;
 import br.com.pet.storeapi.domain.entities.User;
 import br.com.pet.storeapi.domain.services.GuardianService;
+import br.com.pet.storeapi.domain.services.PetService;
+import br.com.pet.storeapi.domain.services.ScheduleService;
 import lombok.AllArgsConstructor;
+import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -25,9 +38,13 @@ import javax.validation.Valid;
 public class GuardianController {
 
     private final GuardianService guardianService;
+    private final PetService petService;
+    private final ScheduleService scheduleService;
     private final UserMapper userMapper;
     private final GuardianMapper guardianMapper;
+    private final PetMapper petMapper;
     private final AddressMapper addressMapper;
+    private final ScheduleMapper scheduleMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,8 +58,33 @@ public class GuardianController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Page<GuardianResponseDTO> listGuardians(
+            @And({
+                    @Spec(path = "name", spec = Like.class),
+                    @Spec(path = "phone", spec = Like.class),
+                    @Spec(path = "document", spec = Like.class)
+            }) Specification<Guardian> guardianSpec,
             @PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        return guardianService.listGuardiansByPage(pageable).map(guardianMapper::toDto);
+        return guardianService.listGuardiansByPage(guardianSpec, pageable).map(guardianMapper::toDto);
+    }
+
+    @GetMapping("/{guardianId}/pets")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<PetResponseDTO> listGuardianPets(
+            @AuthenticationPrincipal User userDetails,
+            @PathVariable UUID guardianId,
+            @PageableDefault(sort = "name",
+                direction = Sort.Direction.ASC) Pageable pageable) {
+        return petService.listGuardianPetsByPage(guardianId, pageable, userDetails).map(petMapper::toDto);
+    }
+
+    @GetMapping("/{guardianId}/schedules")
+    @ResponseStatus(HttpStatus.OK)
+    public Page<ScheduleResponseDTO> listGuardianSchedules(
+            @AuthenticationPrincipal User userDetails,
+            @PathVariable UUID guardianId,
+            @PageableDefault(sort = "scheduleTime", direction = Sort.Direction.ASC) Pageable pageable) {
+        return scheduleService.listGuardianSchedulesByPage(guardianId, pageable, userDetails).map(scheduleMapper::toDto);
     }
 }

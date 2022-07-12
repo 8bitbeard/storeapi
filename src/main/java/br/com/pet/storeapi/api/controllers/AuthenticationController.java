@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,9 +44,8 @@ public class AuthenticationController {
 
     @GetMapping("/me")
     @ResponseStatus(HttpStatus.OK)
-    public UserResponseDTO sessionUser() {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.findUserByEmail(userEmail);
+    public UserResponseDTO sessionUser(@AuthenticationPrincipal User userDetails) {
+        User user = userService.findUserByEmail(userDetails);
 
         return userMapper.toDto(user);
     }

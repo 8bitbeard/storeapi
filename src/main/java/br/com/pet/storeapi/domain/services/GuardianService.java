@@ -12,7 +12,10 @@ import br.com.pet.storeapi.infra.database.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -82,7 +85,7 @@ public class GuardianService {
         return guardianRepository.save(newGuardian);
     }
 
-    public Page<Guardian> listGuardiansByPage(Pageable pageable) {
-        return guardianRepository.findAll(pageable);
+    public Page<Guardian> listGuardiansByPage(Specification<Guardian> guardianSpec, Pageable pageable) {
+        return guardianRepository.findAll(guardianSpec, pageable);
     }
 }

@@ -73,6 +73,26 @@ public class ApiExceptionHandler {
         return exceptionResponse;
     }
 
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    public RestExceptionResponseDTO handleForbiddenException(ForbiddenException ex) {
+        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+        exceptionResponse.setStatus(HttpStatus.FORBIDDEN.getReasonPhrase());
+        exceptionResponse.setMessage(message("ForbiddenException.message"));
+
+        return exceptionResponse;
+    }
+
+    @ExceptionHandler(GuardianNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public RestExceptionResponseDTO handleGuardianNotFoundException(GuardianNotFoundException ex) {
+        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+        exceptionResponse.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
+        exceptionResponse.setMessage(message("GuardianNotFoundException.message"));
+
+        return exceptionResponse;
+    }
+
     @ExceptionHandler(InvalidCepException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public RestExceptionResponseDTO handleInvalidCepException(InvalidCepException ex) {

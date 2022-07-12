@@ -19,7 +19,4 @@ public class UserRequestDTO {
     @NotBlank
     @Size(min = 6, max = 10)
     private String password;
-
-    @NotNull
-    private List<Role> authorities;
 }

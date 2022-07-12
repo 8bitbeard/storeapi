@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
@@ -42,9 +44,9 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/v1/auth/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/v1/guardians").permitAll()
-                .antMatchers(HttpMethod.GET, "/v1/guardians").hasAnyAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.GET, "/v1/pets").hasAnyAuthority("ROLE_ADMIN")
-                .antMatchers("/v1/procedures").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers(HttpMethod.GET, "/v1/guardians").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers(HttpMethod.GET, "/v1/pets").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers("/v1/procedures").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

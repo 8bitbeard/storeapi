@@ -1,5 +1,8 @@
 package br.com.pet.storeapi.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -20,8 +23,8 @@ public class Role implements GrantedAuthority {
     @Enumerated(EnumType.STRING)
     private RoleEnum name;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users = new ArrayList<>();
+//    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
+//    private List<User> users = new ArrayList<>();
 
     @Override
     public String getAuthority() {
