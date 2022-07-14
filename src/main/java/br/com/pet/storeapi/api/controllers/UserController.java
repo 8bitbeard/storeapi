@@ -3,9 +3,11 @@ package br.com.pet.storeapi.api.controllers;
 import br.com.pet.storeapi.api.dtos.request.UserRequestDTO;
 import br.com.pet.storeapi.api.dtos.response.UserResponseDTO;
 import br.com.pet.storeapi.api.mappers.UserMapper;
+import br.com.pet.storeapi.api.swagger.UserApi;
 import br.com.pet.storeapi.domain.entities.User;
 import br.com.pet.storeapi.domain.services.UserService;
 import lombok.AllArgsConstructor;
+import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
@@ -23,7 +25,7 @@ import javax.validation.Valid;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/v1/users")
-public class UserController {
+public class UserController implements UserApi {
 
     private final UserService userService;
     private final UserMapper userMapper;
@@ -42,6 +44,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Page<UserResponseDTO> listUsers(
             @And({
+                    @Spec(path = "userId", spec = Equal.class),
                     @Spec(path = "email", spec = Like.class)
             }) Specification<User> userSpec,
             @PageableDefault(sort = "email", direction = Sort.Direction.ASC) Pageable pageable) {

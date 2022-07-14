@@ -25,43 +25,43 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-//    private final PasswordEncoder passwordEncoder;
+  private final UserRepository userRepository;
+  private final RoleRepository roleRepository;
+  private final PasswordEncoder passwordEncoder;
 
-    @Transactional
-    public User createUser(User user) {
-        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
-        if(existingUser.isPresent()) {
-            throw new UserAlreadyExistsException();
-        }
-
-        Role adminRole = roleRepository.findByName(RoleEnum.ROLE_ADMIN);
-        user.addRole(adminRole);
-
-        return userRepository.save(user);
+  @Transactional
+  public User createUser(User user) {
+    Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+    if (existingUser.isPresent()) {
+      throw new UserAlreadyExistsException();
     }
 
-    public User findUserByEmail(User userDetails) {
-        String userEmail = userDetails.getEmail();
-        return userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
-    }
+    Role adminRole = roleRepository.findByName(RoleEnum.ROLE_ADMIN);
+    user.addRole(adminRole);
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
+    return userRepository.save(user);
+  }
 
-        return user;
-    }
+  public User findUserByEmail(User userDetails) {
+    String userEmail = userDetails.getEmail();
+    return userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+  }
 
-    public UserDetails loadUserById(UUID userId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
 
-        return user;
-    }
+    return user;
+  }
 
+  public UserDetails loadUserById(UUID userId) {
+    User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
-    public Page<User> listUsersByPage(Specification<User> userSpec, Pageable pageable) {
-        return userRepository.findAll(userSpec, pageable);
-    }
+    return user;
+  }
+
+  public Page<User> listUsersByPage(Specification<User> userSpec, Pageable pageable) {
+    return userRepository.findAll(userSpec, pageable);
+  }
 }

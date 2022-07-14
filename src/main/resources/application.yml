@@ -25,6 +25,10 @@ spring:
 #    init:
 #      mode: always
 
+springdoc:
+  swagger-ui:
+    tagsSorter: alpha
+
 storeapi:
   jwt:
     secret: secret

@@ -3,6 +3,7 @@ package br.com.pet.storeapi.api.controllers;
 import br.com.pet.storeapi.api.dtos.request.ProcedureRequestDTO;
 import br.com.pet.storeapi.api.dtos.response.ProcedureResponseDTO;
 import br.com.pet.storeapi.api.mappers.ProcedureMapper;
+import br.com.pet.storeapi.api.swagger.ProcedureApi;
 import br.com.pet.storeapi.domain.entities.Procedure;
 import br.com.pet.storeapi.domain.services.ProcedureService;
 import lombok.AllArgsConstructor;
@@ -23,28 +24,28 @@ import javax.validation.Valid;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/v1/procedures")
-public class ProcedureController {
+public class ProcedureController implements ProcedureApi {
 
-    private final ProcedureMapper procedureMapper;
-    private final ProcedureService procedureService;
+  private final ProcedureMapper procedureMapper;
+  private final ProcedureService procedureService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ProcedureResponseDTO createProcedure(@RequestBody @Valid ProcedureRequestDTO procedureRequestDTO) {
-        Procedure procedure = procedureMapper.toEntity(procedureRequestDTO);
-        Procedure newProcedure = procedureService.createProcedure(procedure);
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public ProcedureResponseDTO createProcedure(@RequestBody @Valid ProcedureRequestDTO procedureRequestDTO) {
+    Procedure procedure = procedureMapper.toEntity(procedureRequestDTO);
+    Procedure newProcedure = procedureService.createProcedure(procedure);
 
-        return procedureMapper.toDto(newProcedure);
-    }
+    return procedureMapper.toDto(newProcedure);
+  }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Page<ProcedureResponseDTO> listProcedures(
-            @And({
-                    @Spec(path = "description", spec = Like.class)
-            }) Specification<Procedure> procedureSpec,
-            @PageableDefault(sort = "description", direction = Sort.Direction.ASC) Pageable pageable) {
-        return procedureService.listProceduresByPage(procedureSpec, pageable).map(procedureMapper::toDto);
-    }
+  @GetMapping
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public Page<ProcedureResponseDTO> listProcedures(
+      @And({
+          @Spec(path = "description", spec = Like.class)
+      }) Specification<Procedure> procedureSpec,
+      @PageableDefault(sort = "description", direction = Sort.Direction.ASC) Pageable pageable) {
+    return procedureService.listProceduresByPage(procedureSpec, pageable).map(procedureMapper::toDto);
+  }
 }
