@@ -1,0 +1,18 @@
+spring:
+  application: storeapi
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
+
+storeapi:
+  jwt:
+    secret: secret
+    expiration: 600000
