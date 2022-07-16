@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
-public class ProcedureResponseDTO {
+public class ServiceResponseDTO {
     private UUID id;
     private String description;
     private BigDecimal value;

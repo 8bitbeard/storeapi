@@ -43,8 +43,7 @@ public class UserService implements UserDetailsService {
     return userRepository.save(user);
   }
 
-  public User findUserByEmail(User userDetails) {
-    String userEmail = userDetails.getEmail();
+  public User findUserByEmail(String userEmail) {
     return userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
   }
 

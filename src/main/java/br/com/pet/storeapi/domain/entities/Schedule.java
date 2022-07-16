@@ -24,8 +24,8 @@ public class Schedule {
     private Guardian guardian;
 
     @ManyToOne
-    @JoinColumn(name = "procedure_id")
-    private Procedure procedure;
+    @JoinColumn(name = "service_id")
+    private Service service;
 
     @Column
     private OffsetDateTime scheduleTime;

@@ -35,9 +35,9 @@ public class ScheduleController implements ScheduleApi {
 
     OffsetDateTime scheduleTime = scheduleRequestDTO.getScheduleTime();
     UUID petId = scheduleRequestDTO.getPetId();
-    UUID procedureId = scheduleRequestDTO.getProcedureId();
+    UUID serviceId = scheduleRequestDTO.getServiceId();
 
-    return scheduleMapper.toDto(scheduleService.createSchedule(userEmail, scheduleTime, petId, procedureId));
+    return scheduleMapper.toDto(scheduleService.createSchedule(userEmail, scheduleTime, petId, serviceId));
   }
 
   @GetMapping

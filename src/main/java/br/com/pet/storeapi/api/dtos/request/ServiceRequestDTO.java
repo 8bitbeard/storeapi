@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @Data
-public class ProcedureRequestDTO {
+public class ServiceRequestDTO {
 
     @NotBlank
     @Size(min = 3, max = 20)

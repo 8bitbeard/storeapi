@@ -1,5 +1,14 @@
 package br.com.pet.storeapi.domain.services;
 
+import java.util.UUID;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
 import br.com.pet.storeapi.api.exceptions.ForbiddenException;
 import br.com.pet.storeapi.api.exceptions.GuardianNotFoundException;
 import br.com.pet.storeapi.api.exceptions.UserNotFoundException;
@@ -10,15 +19,6 @@ import br.com.pet.storeapi.infra.database.repositories.GuardianRepository;
 import br.com.pet.storeapi.infra.database.repositories.PetRepository;
 import br.com.pet.storeapi.infra.database.repositories.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor

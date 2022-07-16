@@ -11,8 +11,8 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "procedures")
-public class Procedure {
+@Table(name = "services")
+public class Service {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,10 +21,10 @@ public class Procedure {
     @Column
     private String description;
 
-    @Column
+    @Column(name = "`value`")
     private BigDecimal value;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "procedure")
+    @OneToMany(mappedBy = "service")
     private List<Schedule> schedules = new ArrayList<>();
 }

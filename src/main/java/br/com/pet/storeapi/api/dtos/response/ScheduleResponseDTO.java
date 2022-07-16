@@ -9,9 +9,9 @@ public class ScheduleResponseDTO {
 
 //    private String guardianName;
 //    private String petName;
-//    private String procedureName;
+//    private String serviceName;
     private GuardianResponseDTO guardian;
     private PetResponseDTO pet;
-    private ProcedureResponseDTO procedure;
+    private ServiceResponseDTO service;
     private OffsetDateTime scheduleTime;
 }

@@ -13,7 +13,7 @@ public class ScheduleRequestDTO {
     private UUID petId;
 
     @NotNull
-    private UUID procedureId;
+    private UUID serviceId;
 
     @NotNull
     private OffsetDateTime scheduleTime;

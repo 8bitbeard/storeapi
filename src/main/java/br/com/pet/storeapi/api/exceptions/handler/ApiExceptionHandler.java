@@ -113,22 +113,22 @@ public class ApiExceptionHandler {
         return exceptionResponse;
     }
 
-    @ExceptionHandler(ProcedureAlreadyExistsException.class)
+    @ExceptionHandler(ServiceAlreadyExistsException.class)
     @ResponseStatus(code = HttpStatus.CONFLICT)
-    public RestExceptionResponseDTO handleProcedureAlreadyExistsException(ProcedureAlreadyExistsException ex) {
+    public RestExceptionResponseDTO handleServiceAlreadyExistsException(ServiceAlreadyExistsException ex) {
         RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
         exceptionResponse.setStatus(HttpStatus.CONFLICT.getReasonPhrase());
-        exceptionResponse.setMessage(message("ProcedureAlreadyExistsException.message"));
+        exceptionResponse.setMessage(message("ServiceAlreadyExistsException.message"));
 
         return exceptionResponse;
     }
 
-    @ExceptionHandler(ProcedureNotFoundException.class)
+    @ExceptionHandler(ServiceNotFoundException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public RestExceptionResponseDTO handleProcedureNotFoundException(ProcedureNotFoundException ex) {
+    public RestExceptionResponseDTO handleServiceNotFoundException(ServiceNotFoundException ex) {
         RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
         exceptionResponse.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
-        exceptionResponse.setMessage(message("ProcedureNotFoundException.message"));
+        exceptionResponse.setMessage(message("ServiceNotFoundException.message"));
 
         return exceptionResponse;
     }

@@ -50,7 +50,8 @@ public class AuthenticationController implements AuthenticationApi {
   @GetMapping("/me")
   @ResponseStatus(HttpStatus.OK)
   public UserResponseDTO sessionUser(@AuthenticationPrincipal User userDetails) {
-    User user = userService.findUserByEmail(userDetails);
+    String userEmail = userDetails.getEmail();
+    User user = userService.findUserByEmail(userEmail);
 
     return userMapper.toDto(user);
   }

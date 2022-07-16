@@ -6,32 +6,30 @@ import br.com.pet.storeapi.infra.database.repositories.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
-@Service
+@org.springframework.stereotype.Service
 @AllArgsConstructor
 public class ScheduleService {
 
     private final UserRepository userRepository;
     private final GuardianRepository guardianRepository;
     private final PetRepository petRepository;
-    private final ProcedureRepository procedureRepository;
+    private final ServiceRepository serviceRepository;
     private final ScheduleRepository scheduleRepository;
 
-    public Schedule createSchedule(String userEmail, OffsetDateTime scheduleTime, UUID petId, UUID procedureId) {
+    public Schedule createSchedule(String userEmail, OffsetDateTime scheduleTime, UUID petId, UUID serviceId) {
         User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
         Guardian guardian = guardianRepository.findByUserId(user.getId()).orElseThrow(UserNotFoundException::new);
         Pet pet = petRepository.findById(petId).orElseThrow(PetNotFoundException::new);
-        Procedure procedure = procedureRepository.findById(procedureId).orElseThrow(ProcedureNotFoundException::new);
+        Service service = serviceRepository.findById(serviceId).orElseThrow(ServiceNotFoundException::new);
 
         Schedule schedule = new Schedule();
         schedule.setGuardian(guardian);
         schedule.setPet(pet);
-        schedule.setProcedure(procedure);
+        schedule.setService(service);
         schedule.setScheduleTime(scheduleTime);
 
         return scheduleRepository.save(schedule);
