@@ -11,17 +11,17 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class PetMapper {
-    private final ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
-    public Pet toEntity(PetRequestDTO petRequestDTO) {
-        return modelMapper.map(petRequestDTO, Pet.class);
-    }
+  public Pet toEntity(PetRequestDTO petRequestDTO) {
+    return modelMapper.map(petRequestDTO, Pet.class);
+  }
 
-    public PetResponseDTO toDto(Pet pet) {
-        return modelMapper.map(pet, PetResponseDTO.class);
-    }
+  public PetResponseDTO toDto(Pet pet) {
+    return modelMapper.map(pet, PetResponseDTO.class);
+  }
 
-    public PetWithGuardianResponseDTO toDtoWithUser(Pet pet) {
-        return modelMapper.map(pet, PetWithGuardianResponseDTO.class);
-    }
+  public PetWithGuardianResponseDTO toDtoWithUser(Pet pet) {
+    return modelMapper.map(pet, PetWithGuardianResponseDTO.class);
+  }
 }

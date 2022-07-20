@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestExceptionResponseDTO {
-    private String status;
-    private String message;
+  private String status;
+  private String message;
 }

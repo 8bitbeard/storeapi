@@ -12,17 +12,17 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class UserMapper {
 
-    private final ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
-    public User toEntity(UserRequestDTO userRequestDTO) {
-        return modelMapper.map(userRequestDTO, User.class);
-    }
+  public User toEntity(UserRequestDTO userRequestDTO) {
+    return modelMapper.map(userRequestDTO, User.class);
+  }
 
-    public User toEntityFromGuardian(GuardianRequestDTO guardianRequestDTO) {
+  public User toEntityFromGuardian(GuardianRequestDTO guardianRequestDTO) {
     return modelMapper.map(guardianRequestDTO, User.class);
-    }
+  }
 
-    public UserResponseDTO toDto(User user) {
-        return modelMapper.map(user, UserResponseDTO.class);
-    }
+  public UserResponseDTO toDto(User user) {
+    return modelMapper.map(user, UserResponseDTO.class);
+  }
 }

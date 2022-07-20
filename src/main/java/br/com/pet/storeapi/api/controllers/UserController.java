@@ -6,6 +6,7 @@ import br.com.pet.storeapi.api.mappers.UserMapper;
 import br.com.pet.storeapi.api.swagger.UserApi;
 import br.com.pet.storeapi.domain.entities.User;
 import br.com.pet.storeapi.domain.services.UserService;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
@@ -20,34 +21,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("/v1/users")
 public class UserController implements UserApi {
 
-    private final UserService userService;
-    private final UserMapper userMapper;
+  private final UserService userService;
+  private final UserMapper userMapper;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public UserResponseDTO createUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
-        User newUserData = userMapper.toEntity(userRequestDTO);
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public UserResponseDTO createUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
+    User newUserData = userMapper.toEntity(userRequestDTO);
 
-        return userMapper.toDto(userService.createUser(newUserData));
-    }
+    return userMapper.toDto(userService.createUser(newUserData));
+  }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Page<UserResponseDTO> listUsers(
-            @And({
-                    @Spec(path = "userId", spec = Equal.class),
-                    @Spec(path = "email", spec = Like.class)
-            }) Specification<User> userSpec,
-            @PageableDefault(sort = "email", direction = Sort.Direction.ASC) Pageable pageable) {
-        return userService.listUsersByPage(userSpec, pageable).map(userMapper::toDto);
-    }
+  @GetMapping
+  @ResponseStatus(HttpStatus.OK)
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  public Page<UserResponseDTO> listUsers(
+      @And({@Spec(path = "userId", spec = Equal.class), @Spec(path = "email", spec = Like.class)})
+          Specification<User> userSpec,
+      @PageableDefault(sort = "email", direction = Sort.Direction.ASC) Pageable pageable) {
+    return userService.listUsersByPage(userSpec, pageable).map(userMapper::toDto);
+  }
 }

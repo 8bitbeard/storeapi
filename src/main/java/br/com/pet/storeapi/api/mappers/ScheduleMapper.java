@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ScheduleMapper {
 
-    private final ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
-    public Schedule toEntity(ScheduleRequestDTO scheduleRequestDTO) {
-        return modelMapper.map(scheduleRequestDTO, Schedule.class);
-    }
+  public Schedule toEntity(ScheduleRequestDTO scheduleRequestDTO) {
+    return modelMapper.map(scheduleRequestDTO, Schedule.class);
+  }
 
-    public ScheduleResponseDTO toDto(Schedule schedule) {
-        return modelMapper.map(schedule, ScheduleResponseDTO.class);
-    }
+  public ScheduleResponseDTO toDto(Schedule schedule) {
+    return modelMapper.map(schedule, ScheduleResponseDTO.class);
+  }
 }

@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RoleRequestDTO {
 
-    private String name;
+  private String name;
 }

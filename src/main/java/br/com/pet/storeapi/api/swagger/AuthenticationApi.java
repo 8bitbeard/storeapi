@@ -12,11 +12,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Authentication")
 public interface AuthenticationApi {
 
-  @Operation(summary = "Log in the user to the application", description = "Log in the user to the application")
+  @Operation(
+      summary = "Log in the user to the application",
+      description = "Log in the user to the application")
   @SecurityRequirements(value = {})
   public LoginResponseDTO login(LoginRequestDTO loginRequestDTO);
 
-  @Operation(summary = "Returns the information from the logged in user", description = "This action can only be performed by a logged in user")
+  @Operation(
+      summary = "Returns the information from the logged in user",
+      description = "This action can only be performed by a logged in user")
   @Parameter(name = "userDetails", hidden = true)
   public UserResponseDTO sessionUser(User userDetails);
 }

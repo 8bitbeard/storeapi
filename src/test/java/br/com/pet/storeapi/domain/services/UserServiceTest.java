@@ -48,142 +48,129 @@ class UserServiceTest {
         underTest = new UserService(userRepository, roleRepository, passwordEncoder);
     }
 
-    @Nested
-    class CreateUserTest {
-        @Test
-        @DisplayName("should create a new user successfully")
-        void itShouldCreateANewAdminUser() {
-            User user = new User(
-                    UUID.fromString("5a9d43fc-0a10-4339-9c31-b67427c51a8d"),
-                    "user@example.com",
-                    "teste",
-                    new ArrayList<>()
-            );
-            underTest.createUser(user);
-            ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
-            verify(userRepository).save(userArgumentCaptor.capture());
+    @Test
+    @DisplayName("should create a new user successfully")
+    void itShouldCreateANewAdminUser() {
+        User user = new User(
+                UUID.fromString("5a9d43fc-0a10-4339-9c31-b67427c51a8d"),
+                "user@example.com",
+                "teste",
+                new ArrayList<>()
+        );
+        underTest.createUser(user);
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userArgumentCaptor.capture());
 
-            User capturedUser = userArgumentCaptor.getValue();
-            assertThat(capturedUser).isEqualTo(user);
-        }
-
-        @Test
-        @DisplayName("should throw an exception when the email is already taken")
-        void willThrowWhenEmailIsTaken() {
-            User user = new User(
-                    UUID.fromString("5a9d43fc-0a10-4339-9c31-b67427c51a8d"),
-                    "user@example.com",
-                    "123456",
-                    new ArrayList<>()
-            );
-
-            given(userRepository.findByEmail(anyString()))
-                    .willReturn(Optional.of(user));
-
-            assertThatThrownBy(() -> underTest.createUser(user))
-                    .isInstanceOf(UserAlreadyExistsException.class);
-
-            verify(userRepository, never()).save(any());
-        }
+        User capturedUser = userArgumentCaptor.getValue();
+        assertThat(capturedUser).isEqualTo(user);
     }
 
-    @Nested
-    class FindUserByEmailTest {
-        @Test
-        void itShouldFindAnUserByEmail() {
-            User user = new User(
-                    UUID.fromString("5a9d43fc-0a10-4339-9c31-b67427c51a8d"),
-                    "user@example.com",
-                    "123456",
-                    new ArrayList<>()
-            );
+    @Test
+    @DisplayName("should throw an exception when the email is already taken")
+    void willThrowWhenEmailIsTaken() {
+        User user = new User(
+                UUID.fromString("5a9d43fc-0a10-4339-9c31-b67427c51a8d"),
+                "user@example.com",
+                "123456",
+                new ArrayList<>()
+        );
 
-            given(userRepository.findByEmail(anyString()))
-                    .willReturn(Optional.of(user));
+        given(userRepository.findByEmail(anyString()))
+                .willReturn(Optional.of(user));
 
-            underTest.findUserByEmail(user.getEmail());
-            verify(userRepository).findByEmail(user.getEmail());
-        }
+        assertThatThrownBy(() -> underTest.createUser(user))
+                .isInstanceOf(UserAlreadyExistsException.class);
 
-        @Test
-        void willThrowWhenUserDoesNotExists() {
-            given(userRepository.findByEmail(anyString()))
-                    .willReturn(Optional.empty());
-
-            assertThatThrownBy(() -> underTest.findUserByEmail(anyString()))
-                    .isInstanceOf(UserNotFoundException.class);
-        }
+        verify(userRepository, never()).save(any());
     }
 
-    @Nested
-    class LoadUserByUsernameTest {
-        @Test
-        void itShouldLoadUserByUsername() {
-          User user = new User(
-            UUID.fromString("5a9d43fc-0a10-4339-9c31-b67427c51a8d"),
-            "user@example.com",
-            "123456",
-            new ArrayList<>()
-              );
+    @Test
+    @DisplayName("should return an user after finding by email")
+    void itShouldFindAnUserByEmail() {
+        User user = new User(
+                UUID.fromString("5a9d43fc-0a10-4339-9c31-b67427c51a8d"),
+                "user@example.com",
+                "123456",
+                new ArrayList<>()
+        );
 
-          given(userRepository.findByEmail(anyString()))
-            .willReturn(Optional.of(user));
+        given(userRepository.findByEmail(anyString()))
+                .willReturn(Optional.of(user));
 
-          underTest.loadUserByUsername(user.getEmail());
-          verify(userRepository).findByEmail(user.getEmail());
-        }
-
-        @Test
-        void willThrownWhenUserDoesNotExists() {
-          given(userRepository.findByEmail(anyString()))
-            .willReturn(Optional.empty());
-
-          assertThatThrownBy(() -> underTest.loadUserByUsername(anyString()))
-            .isInstanceOf(UserNotFoundException.class);
-        }
+        underTest.findUserByEmail(user.getEmail());
+        verify(userRepository).findByEmail(user.getEmail());
     }
 
-    @Nested
-    class LoadUserByIdTest {
-        @Test
-        void itShouldLoadUSerById() {
-            User user = new User(
-                    UUID.fromString("5a9d43fc-0a10-4339-9c31-b67427c51a8d"),
-                    "user@example.com",
-                    "123456",
-                    new ArrayList<>()
-            );
+    @Test
+    @DisplayName("should throw an error when the user does not exists by email")
+    void willThrowWhenUserDoesNotExistsByEmail() {
+        given(userRepository.findByEmail(anyString()))
+                .willReturn(Optional.empty());
 
-            given(userRepository.findById(user.getId()))
-                    .willReturn(Optional.of(user));
-
-            underTest.loadUserById(user.getId());
-            verify(userRepository).findById(user.getId());
-        }
-
-        @Test
-        void willThrownWhenUserDoesNotExists() {
-            UUID userId = UUID.randomUUID();
-            given(userRepository.findById(userId))
-                    .willReturn(Optional.empty());
-
-            assertThatThrownBy(() -> underTest.loadUserById(userId))
-                    .isInstanceOf(UserNotFoundException.class);
-        }
+        assertThatThrownBy(() -> underTest.findUserByEmail(anyString()))
+                .isInstanceOf(UserNotFoundException.class);
     }
 
-    @Nested
-    class ListUsersByPageTest {
-        @Test
-        void itShouldReturnUsersByPage() {
-            Page<User> userPaginated = Mockito.mock(Page.class);
-            Specification<User> userSpec = Mockito.mock(Specification.class);
-            Pageable pageable = Mockito.mock(Pageable.class);
-            given(userRepository.findAll(userSpec, pageable))
-                    .willReturn(userPaginated);
+    @Test
+    void itShouldLoadUserByUsername() {
+      User user = new User(
+        UUID.fromString("5a9d43fc-0a10-4339-9c31-b67427c51a8d"),
+        "user@example.com",
+        "123456",
+        new ArrayList<>()
+          );
 
-            underTest.listUsersByPage(userSpec, pageable);
-            verify(userRepository).findAll(userSpec, pageable);
-        }
+      given(userRepository.findByEmail(anyString()))
+        .willReturn(Optional.of(user));
+
+      underTest.loadUserByUsername(user.getEmail());
+      verify(userRepository).findByEmail(user.getEmail());
+    }
+
+    @Test
+    void willThrownWhenUserDoesNotExistsByUsername() {
+      given(userRepository.findByEmail(anyString()))
+        .willReturn(Optional.empty());
+
+      assertThatThrownBy(() -> underTest.loadUserByUsername(anyString()))
+        .isInstanceOf(UserNotFoundException.class);
+    }
+
+    @Test
+    void itShouldLoadUSerById() {
+        User user = new User(
+                UUID.fromString("5a9d43fc-0a10-4339-9c31-b67427c51a8d"),
+                "user@example.com",
+                "123456",
+                new ArrayList<>()
+        );
+
+        given(userRepository.findById(user.getId()))
+                .willReturn(Optional.of(user));
+
+        underTest.loadUserById(user.getId());
+        verify(userRepository).findById(user.getId());
+    }
+
+    @Test
+    void willThrownWhenUserDoesNotExistsById() {
+        UUID userId = UUID.randomUUID();
+        given(userRepository.findById(userId))
+                .willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> underTest.loadUserById(userId))
+                .isInstanceOf(UserNotFoundException.class);
+    }
+
+    @Test
+    void itShouldReturnUsersByPage() {
+        Page<User> userPaginated = Mockito.mock(Page.class);
+        Specification<User> userSpec = Mockito.mock(Specification.class);
+        Pageable pageable = Mockito.mock(Pageable.class);
+        given(userRepository.findAll(userSpec, pageable))
+                .willReturn(userPaginated);
+
+        underTest.listUsersByPage(userSpec, pageable);
+        verify(userRepository).findAll(userSpec, pageable);
     }
 }

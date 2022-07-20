@@ -3,6 +3,8 @@ package br.com.pet.storeapi.api.exceptions.handler;
 import br.com.pet.storeapi.api.dtos.response.RestExceptionResponseDTO;
 import br.com.pet.storeapi.api.dtos.response.RestExcetionListResponseDTO;
 import br.com.pet.storeapi.api.exceptions.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -14,146 +16,147 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @AllArgsConstructor
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    private final MessageSource messageSource;
+  private final MessageSource messageSource;
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public RestExcetionListResponseDTO handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        List<RestExcetionListResponseDTO.Field> fields = new ArrayList<>();
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+  public RestExcetionListResponseDTO handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex) {
+    List<RestExcetionListResponseDTO.Field> fields = new ArrayList<>();
 
-        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
-            String name = ((FieldError) error).getField();
-            String message = messageSource.getMessage(error, LocaleContextHolder.getLocale());
+    for (ObjectError error : ex.getBindingResult().getAllErrors()) {
+      String name = ((FieldError) error).getField();
+      String message = messageSource.getMessage(error, LocaleContextHolder.getLocale());
 
-            fields.add(new RestExcetionListResponseDTO.Field(name, message));
-        }
-
-        RestExcetionListResponseDTO error = new RestExcetionListResponseDTO();
-        error.setStatus(HttpStatus.BAD_REQUEST.getReasonPhrase());
-        error.setMessage(message("MethodArgumentNotValidException.message"));
-        error.setFields(fields);
-
-        return error;
+      fields.add(new RestExcetionListResponseDTO.Field(name, message));
     }
 
-    @ExceptionHandler(AuthenticationFailedException.class)
-    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public RestExceptionResponseDTO handleAuthenticationFailedException(AuthenticationFailedException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-        exceptionResponse.setMessage(message("AuthenticationFailedException.message"));
+    RestExcetionListResponseDTO error = new RestExcetionListResponseDTO();
+    error.setStatus(HttpStatus.BAD_REQUEST.getReasonPhrase());
+    error.setMessage(message("MethodArgumentNotValidException.message"));
+    error.setFields(fields);
 
-        return exceptionResponse;
-    }
+    return error;
+  }
 
-    @ExceptionHandler(DocumentAlreadyInUseException.class)
-    @ResponseStatus(code = HttpStatus.CONFLICT)
-    public RestExceptionResponseDTO handleDocumentAlreadyInUseException(DocumentAlreadyInUseException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.CONFLICT.getReasonPhrase());
-        exceptionResponse.setMessage(message("DocumentAlreadyInUseException.message"));
+  @ExceptionHandler(AuthenticationFailedException.class)
+  @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+  public RestExceptionResponseDTO handleAuthenticationFailedException(
+      AuthenticationFailedException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+    exceptionResponse.setMessage(message("AuthenticationFailedException.message"));
 
-        return exceptionResponse;
-    }
+    return exceptionResponse;
+  }
 
-    @ExceptionHandler(EmailAlreadyInUseException.class)
-    @ResponseStatus(code = HttpStatus.CONFLICT)
-    public RestExceptionResponseDTO handleEmailAlreadyInUseException(EmailAlreadyInUseException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.CONFLICT.getReasonPhrase());
-        exceptionResponse.setMessage(message("EmailAlreadyInUseException.message"));
+  @ExceptionHandler(DocumentAlreadyInUseException.class)
+  @ResponseStatus(code = HttpStatus.CONFLICT)
+  public RestExceptionResponseDTO handleDocumentAlreadyInUseException(
+      DocumentAlreadyInUseException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.CONFLICT.getReasonPhrase());
+    exceptionResponse.setMessage(message("DocumentAlreadyInUseException.message"));
 
-        return exceptionResponse;
-    }
+    return exceptionResponse;
+  }
 
-    @ExceptionHandler(ForbiddenException.class)
-    @ResponseStatus(code = HttpStatus.FORBIDDEN)
-    public RestExceptionResponseDTO handleForbiddenException(ForbiddenException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.FORBIDDEN.getReasonPhrase());
-        exceptionResponse.setMessage(message("ForbiddenException.message"));
+  @ExceptionHandler(EmailAlreadyInUseException.class)
+  @ResponseStatus(code = HttpStatus.CONFLICT)
+  public RestExceptionResponseDTO handleEmailAlreadyInUseException(EmailAlreadyInUseException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.CONFLICT.getReasonPhrase());
+    exceptionResponse.setMessage(message("EmailAlreadyInUseException.message"));
 
-        return exceptionResponse;
-    }
+    return exceptionResponse;
+  }
 
-    @ExceptionHandler(GuardianNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public RestExceptionResponseDTO handleGuardianNotFoundException(GuardianNotFoundException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
-        exceptionResponse.setMessage(message("GuardianNotFoundException.message"));
+  @ExceptionHandler(ForbiddenException.class)
+  @ResponseStatus(code = HttpStatus.FORBIDDEN)
+  public RestExceptionResponseDTO handleForbiddenException(ForbiddenException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.FORBIDDEN.getReasonPhrase());
+    exceptionResponse.setMessage(message("ForbiddenException.message"));
 
-        return exceptionResponse;
-    }
+    return exceptionResponse;
+  }
 
-    @ExceptionHandler(InvalidCepException.class)
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    public RestExceptionResponseDTO handleInvalidCepException(InvalidCepException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.BAD_REQUEST.getReasonPhrase());
-        exceptionResponse.setMessage(message("InvalidCepException.message"));
+  @ExceptionHandler(GuardianNotFoundException.class)
+  @ResponseStatus(code = HttpStatus.NOT_FOUND)
+  public RestExceptionResponseDTO handleGuardianNotFoundException(GuardianNotFoundException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
+    exceptionResponse.setMessage(message("GuardianNotFoundException.message"));
 
-        return exceptionResponse;
-    }
+    return exceptionResponse;
+  }
 
-    @ExceptionHandler(PetNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public RestExceptionResponseDTO handlePetNotFoundException(PetNotFoundException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
-        exceptionResponse.setMessage(message("PetNotFoundException.message"));
+  @ExceptionHandler(InvalidCepException.class)
+  @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+  public RestExceptionResponseDTO handleInvalidCepException(InvalidCepException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.BAD_REQUEST.getReasonPhrase());
+    exceptionResponse.setMessage(message("InvalidCepException.message"));
 
-        return exceptionResponse;
-    }
+    return exceptionResponse;
+  }
 
-    @ExceptionHandler(ServiceAlreadyExistsException.class)
-    @ResponseStatus(code = HttpStatus.CONFLICT)
-    public RestExceptionResponseDTO handleServiceAlreadyExistsException(ServiceAlreadyExistsException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.CONFLICT.getReasonPhrase());
-        exceptionResponse.setMessage(message("ServiceAlreadyExistsException.message"));
+  @ExceptionHandler(PetNotFoundException.class)
+  @ResponseStatus(code = HttpStatus.NOT_FOUND)
+  public RestExceptionResponseDTO handlePetNotFoundException(PetNotFoundException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
+    exceptionResponse.setMessage(message("PetNotFoundException.message"));
 
-        return exceptionResponse;
-    }
+    return exceptionResponse;
+  }
 
-    @ExceptionHandler(ServiceNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public RestExceptionResponseDTO handleServiceNotFoundException(ServiceNotFoundException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
-        exceptionResponse.setMessage(message("ServiceNotFoundException.message"));
+  @ExceptionHandler(ServiceAlreadyExistsException.class)
+  @ResponseStatus(code = HttpStatus.CONFLICT)
+  public RestExceptionResponseDTO handleServiceAlreadyExistsException(
+      ServiceAlreadyExistsException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.CONFLICT.getReasonPhrase());
+    exceptionResponse.setMessage(message("ServiceAlreadyExistsException.message"));
 
-        return exceptionResponse;
-    }
+    return exceptionResponse;
+  }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    @ResponseStatus(code = HttpStatus.CONFLICT)
-    public RestExceptionResponseDTO handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.CONFLICT.getReasonPhrase());
-        exceptionResponse.setMessage(message("UserAlreadyExistsException.message"));
+  @ExceptionHandler(ServiceNotFoundException.class)
+  @ResponseStatus(code = HttpStatus.NOT_FOUND)
+  public RestExceptionResponseDTO handleServiceNotFoundException(ServiceNotFoundException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
+    exceptionResponse.setMessage(message("ServiceNotFoundException.message"));
 
-        return exceptionResponse;
-    }
+    return exceptionResponse;
+  }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public RestExceptionResponseDTO handleUserNotFoundException(UserNotFoundException ex) {
-        RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
-        exceptionResponse.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
-        exceptionResponse.setMessage(message("UserNotFoundException.message"));
+  @ExceptionHandler(UserAlreadyExistsException.class)
+  @ResponseStatus(code = HttpStatus.CONFLICT)
+  public RestExceptionResponseDTO handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.CONFLICT.getReasonPhrase());
+    exceptionResponse.setMessage(message("UserAlreadyExistsException.message"));
 
-        return exceptionResponse;
-    }
+    return exceptionResponse;
+  }
 
-    private String message(String code, Object... params) {
-        return messageSource.getMessage(code, params, LocaleContextHolder.getLocale());
-    }
+  @ExceptionHandler(UserNotFoundException.class)
+  @ResponseStatus(code = HttpStatus.NOT_FOUND)
+  public RestExceptionResponseDTO handleUserNotFoundException(UserNotFoundException ex) {
+    RestExceptionResponseDTO exceptionResponse = new RestExceptionResponseDTO();
+    exceptionResponse.setStatus(HttpStatus.NOT_FOUND.getReasonPhrase());
+    exceptionResponse.setMessage(message("UserNotFoundException.message"));
+
+    return exceptionResponse;
+  }
+
+  private String message(String code, Object... params) {
+    return messageSource.getMessage(code, params, LocaleContextHolder.getLocale());
+  }
 }

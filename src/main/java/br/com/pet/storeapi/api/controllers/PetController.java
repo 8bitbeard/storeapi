@@ -1,9 +1,22 @@
 package br.com.pet.storeapi.api.controllers;
 
+import br.com.pet.storeapi.api.dtos.request.PetRequestDTO;
+import br.com.pet.storeapi.api.dtos.response.PetResponseDTO;
+import br.com.pet.storeapi.api.dtos.response.PetWithGuardianResponseDTO;
+import br.com.pet.storeapi.api.dtos.response.ScheduleResponseDTO;
+import br.com.pet.storeapi.api.mappers.PetMapper;
+import br.com.pet.storeapi.api.mappers.ScheduleMapper;
+import br.com.pet.storeapi.api.swagger.PetApi;
+import br.com.pet.storeapi.domain.entities.Pet;
+import br.com.pet.storeapi.domain.entities.User;
+import br.com.pet.storeapi.domain.services.PetService;
+import br.com.pet.storeapi.domain.services.ScheduleService;
 import java.util.UUID;
-
 import javax.validation.Valid;
-
+import lombok.AllArgsConstructor;
+import net.kaczmarzyk.spring.data.jpa.domain.Like;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,22 +33,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import br.com.pet.storeapi.api.dtos.request.PetRequestDTO;
-import br.com.pet.storeapi.api.dtos.response.PetResponseDTO;
-import br.com.pet.storeapi.api.dtos.response.PetWithGuardianResponseDTO;
-import br.com.pet.storeapi.api.dtos.response.ScheduleResponseDTO;
-import br.com.pet.storeapi.api.mappers.PetMapper;
-import br.com.pet.storeapi.api.mappers.ScheduleMapper;
-import br.com.pet.storeapi.api.swagger.PetApi;
-import br.com.pet.storeapi.domain.entities.Pet;
-import br.com.pet.storeapi.domain.entities.User;
-import br.com.pet.storeapi.domain.services.PetService;
-import br.com.pet.storeapi.domain.services.ScheduleService;
-import lombok.AllArgsConstructor;
-import net.kaczmarzyk.spring.data.jpa.domain.Like;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
-import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 
 @RestController
 @AllArgsConstructor
@@ -61,10 +58,11 @@ public class PetController implements PetApi {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   public Page<PetWithGuardianResponseDTO> listPets(
       @And({
-          @Spec(path = "name", spec = Like.class),
-          @Spec(path = "breed", spec = Like.class),
-          @Spec(path = "specie", spec = Like.class)
-      }) Specification<Pet> petSpec,
+            @Spec(path = "name", spec = Like.class),
+            @Spec(path = "breed", spec = Like.class),
+            @Spec(path = "specie", spec = Like.class)
+          })
+          Specification<Pet> petSpec,
       @PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
     return petService.listPetsByPage(petSpec, pageable).map(petMapper::toDtoWithUser);
   }
@@ -75,6 +73,8 @@ public class PetController implements PetApi {
       @AuthenticationPrincipal User userDetails,
       @PathVariable UUID petId,
       @PageableDefault(sort = "scheduleTime", direction = Sort.Direction.ASC) Pageable pageable) {
-    return scheduleService.listPetSchedulesByPage(petId, pageable, userDetails).map(scheduleMapper::toDto);
+    return scheduleService
+        .listPetSchedulesByPage(petId, pageable, userDetails)
+        .map(scheduleMapper::toDto);
   }
 }

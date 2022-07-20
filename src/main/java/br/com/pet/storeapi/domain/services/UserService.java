@@ -7,6 +7,8 @@ import br.com.pet.storeapi.domain.entities.RoleEnum;
 import br.com.pet.storeapi.domain.entities.User;
 import br.com.pet.storeapi.infra.database.repositories.RoleRepository;
 import br.com.pet.storeapi.infra.database.repositories.UserRepository;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +19,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor

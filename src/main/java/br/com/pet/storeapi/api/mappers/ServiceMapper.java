@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ServiceMapper {
 
-    private final ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
-    public Service toEntity(ServiceRequestDTO serviceRequestDTO) {
-        return modelMapper.map(serviceRequestDTO, Service.class);
-    }
+  public Service toEntity(ServiceRequestDTO serviceRequestDTO) {
+    return modelMapper.map(serviceRequestDTO, Service.class);
+  }
 
-    public ServiceResponseDTO toDto(Service service) {
-        return modelMapper.map(service, ServiceResponseDTO.class);
-    }
+  public ServiceResponseDTO toDto(Service service) {
+    return modelMapper.map(service, ServiceResponseDTO.class);
+  }
 }

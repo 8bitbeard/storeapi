@@ -10,12 +10,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ModelMapperConfig {
 
-    @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        TypeMap<Guardian, GuardianResponseDTO> guardianPropertyMapper = modelMapper.createTypeMap(Guardian.class, GuardianResponseDTO.class);
-        guardianPropertyMapper.addMapping(src -> src.getUser().getEmail(), GuardianResponseDTO::setEmail);
+  @Bean
+  public ModelMapper modelMapper() {
+    ModelMapper modelMapper = new ModelMapper();
+    TypeMap<Guardian, GuardianResponseDTO> guardianPropertyMapper =
+        modelMapper.createTypeMap(Guardian.class, GuardianResponseDTO.class);
+    guardianPropertyMapper.addMapping(
+        src -> src.getUser().getEmail(), GuardianResponseDTO::setEmail);
 
-        return modelMapper;
-    }
+    return modelMapper;
+  }
 }

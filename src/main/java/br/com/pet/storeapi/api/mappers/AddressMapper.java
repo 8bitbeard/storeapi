@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class AddressMapper {
 
-    private final ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
-    public Address toEntity(AddressRequestDTO addressRequestDTO) {
-        return modelMapper.map(addressRequestDTO, Address.class);
-    }
+  public Address toEntity(AddressRequestDTO addressRequestDTO) {
+    return modelMapper.map(addressRequestDTO, Address.class);
+  }
 }
